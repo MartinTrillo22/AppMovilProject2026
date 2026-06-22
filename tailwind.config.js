@@ -8,8 +8,12 @@ module.exports = {
   ],
   presets: [require("nativewind/preset")],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        radley: ["Radley_400Regular"],
+        "radley-italic": ["Radley_400Regular_Italic"],
+      },
+    },
   },
   plugins: [],
 }
-

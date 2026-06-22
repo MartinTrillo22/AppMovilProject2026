@@ -1,93 +1,42 @@
-import React from 'react';
-import { View, Text, Image, StyleSheet, StatusBar } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
+import React from 'react';
+import { Image, StatusBar, Text, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import GoldButton from '../src/components/ui/GoldButton';
 
 export default function IndexScreen() {
-  const router = useRouter();
+    const router = useRouter();
 
-  return (
-    <SafeAreaView style={styles.container} className="flex-1 bg-black">
-      <StatusBar barStyle="light-content" backgroundColor="#000000" />
-      
-      <View style={styles.content} className="flex-1 items-center justify-between px-6 py-10">
-        {/* Logo Section */}
-        <View style={styles.logoContainer} className="flex-[1.2] justify-center items-center w-full">
-          <Image
-            source={require('../assets/images/logo.jpeg')}
-            style={styles.logo}
-            className="w-[280px] h-[280px]"
-            resizeMode="contain"
-          />
-        </View>
+    return (
+        <SafeAreaView className="flex-1 bg-black">
+            <StatusBar barStyle="light-content" backgroundColor="#000000" />
 
-        {/* Text Section */}
-        <View style={styles.textContainer} className="flex-1 justify-center items-center w-full">
-          <Text style={styles.title} className="text-white text-4xl text-center mb-6 font-normal">
-            Bienvenido
-          </Text>
-          <Text style={styles.subtitle} className="text-white text-lg text-center font-light leading-7">
-            Tu próxima cita está a solo un{"\n"}toque de distancia.
-          </Text>
-        </View>
+            <View className="flex-1 px-6 pb-5">
+                {/* Logo Section - Top Area */}
+                <View className="flex-[4] justify-center items-center w-full mb-8 mt-5">
+                    <Image
+                        source={require('../assets/images/logo.jpeg')}
+                        className="flex-[1] h-full"
+                        resizeMode="contain"
+                    />
+                </View>
 
-        {/* Button Section */}
-        <View style={styles.buttonContainer} className="w-full pb-5 items-center">
-          <GoldButton
-            title="Continuar"
-            onPress={() => router.push('/(auth)/regsiter')}
-          />
-        </View>
-      </View>
-    </SafeAreaView>
-  );
+                {/* Text Section - Middle Area (Vertically Centered) */}
+                <View className="flex-[6] mt-10 items-center">
+                    <Text className="text-white text-5xl text-center mb-4 font-normal font-radley">
+                        Bienvenido
+                    </Text>
+                    <Text className="text-white text-2xl text-center font-light leading-10 mt-8 font-radley w-4/5 mx-auto mb-10">
+                        Tu próxima cita está a solo un toque de distancia.
+                    </Text>
+
+                    <GoldButton
+                        title="Continuar"
+                        onPress={() => router.push('../(auth)/welcome')}
+                        className="w-[50%] mt-12 mx-auto"
+                    />
+                </View>
+            </View>
+        </SafeAreaView >
+    );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#000000',
-  },
-  content: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 24,
-    paddingTop: 40,
-    paddingBottom: 40,
-  },
-  logoContainer: {
-    flex: 1.2,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-  },
-  logo: {
-    width: 280,
-    height: 280,
-  },
-  textContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: '100%',
-  },
-  title: {
-    color: '#ffffff',
-    fontSize: 40,
-    textAlign: 'center',
-    marginBottom: 24,
-  },
-  subtitle: {
-    color: '#ffffff',
-    fontSize: 18,
-    textAlign: 'center',
-    lineHeight: 28,
-  },
-  buttonContainer: {
-    width: '100%',
-    paddingBottom: 20,
-    alignItems: 'center',
-  },
-});
