@@ -5,8 +5,10 @@ import "../global.css";
 export default function RootLayout() {
 
   return (
-    <Stack>
-      <Stack.Screen name="(tabs)/index" options={{ title: "Inicio" }} />
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="index" />
+      <Stack.Screen name="(auth)" />
+      <Stack.Screen name="(tabs)" />
     </Stack>
   );
 }
