@@ -1,18 +1,18 @@
+import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import {
   TextInput,
-  View,
-  TouchableOpacity,
   TextInputProps,
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
 
 interface InputFieldProps extends TextInputProps {
   containerClassName?: string;
   inputClassName?: string;
 }
 
-export const InputField: React.FC<InputFieldProps> = ({
+const InputField: React.FC<InputFieldProps> = ({
   containerClassName = '',
   inputClassName = '',
   secureTextEntry,

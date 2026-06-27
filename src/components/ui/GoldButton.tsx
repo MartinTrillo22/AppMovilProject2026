@@ -15,7 +15,7 @@ interface GoldButtonProps {
   textClassName?: string;
 }
 
-export const GoldButton: React.FC<GoldButtonProps> = ({
+const GoldButton: React.FC<GoldButtonProps> = ({
   title,
   onPress,
   disabled = false,
