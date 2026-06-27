@@ -15,7 +15,7 @@ export default function WelcomeScreen() {
             <View className="flex-1  px-6 ">
 
                 {/* Top Area: Logo & Title */}
-                <View className="items-center mt-6 mb-10">
+                <View className="items-center mt-10 mb-10">
                     {/* Circular Logo Container */}
                     <View className="w-[200px] h-[200px] bg-black rounded-full border border-white overflow-hidden mb-8 justify-center items-center">
                         <Image

@@ -29,7 +29,7 @@ export default function LoginScreen() {
         contentContainerStyle={{ paddingBottom: 40 }}
       >
         {/* Photo */}
-        <View className="w-full h-[240px] rounded-2xl overflow-hidden mt-4 mb-8">
+        <View className="w-full h-[240px] rounded-2xl overflow-hidden mt-14 mb-8">
           <Image
             source={require('../../assets/images/fotoprincipal.png')}
             className="w-full h-full"

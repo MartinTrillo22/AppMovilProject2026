@@ -1,13 +1,13 @@
-import React from 'react';
-import { Text, View, Image, ScrollView, TouchableOpacity } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
+import React from 'react';
+import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const HomeIndex = () => {
   return (
     <SafeAreaView className="flex-1 bg-black" edges={['top', 'left', 'right']}>
       <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
-        
+
         {/* Header Superior */}
         <View className="flex-row justify-between items-center px-4 py-4 mt-2">
           <View className="flex-row items-center">
@@ -18,16 +18,16 @@ const HomeIndex = () => {
                 const col = index % 4;
                 const isBlack = (row + col) % 2 === 0;
                 return (
-                  <View 
-                    key={index} 
-                    className={`w-3 h-3 ${isBlack ? 'bg-black' : 'bg-white'}`} 
+                  <View
+                    key={index}
+                    className={`w-3 h-3 ${isBlack ? 'bg-black' : 'bg-white'}`}
                   />
                 );
               })}
             </View>
             <Text className="text-white text-base font-normal ml-3">Bienvenido, Usuario</Text>
           </View>
-          
+
           <View className="flex-row items-center gap-4">
             <TouchableOpacity>
               <Feather name="bell" size={26} color="white" />
@@ -59,9 +59,9 @@ const HomeIndex = () => {
         </View>
 
         {/* Fila de Categorías */}
-        <ScrollView 
-          horizontal 
-          showsHorizontalScrollIndicator={false} 
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
           className="my-6"
           contentContainerStyle={{ flexGrow: 1, flexDirection: 'row', justifyContent: 'space-around', paddingHorizontal: 16 }}
         >
@@ -81,13 +81,7 @@ const HomeIndex = () => {
             <Text className="text-gray-400 text-xs font-medium">Barba</Text>
           </View>
 
-          {/* tinte */}
-          <View className="items-center mx-2">
-            <TouchableOpacity className="bg-[#1C1C1E] w-14 h-14 rounded-full items-center justify-center mb-2">
-              <MaterialCommunityIcons name="palette" size={24} color="#EAB308" />
-            </TouchableOpacity>
-            <Text className="text-gray-400 text-xs font-medium">tinte</Text>
-          </View>
+
 
           {/* Cejas */}
           <View className="items-center mx-2">
@@ -101,8 +95,8 @@ const HomeIndex = () => {
         {/* Sección de Localización */}
         <View className="mt-4 mb-8">
           <Text className="text-gray-400 text-sm px-4 mb-3">Donde estamos localizados</Text>
-          <Image 
-            source={require('../../assets/images/localbarberia.png')} 
+          <Image
+            source={require('../../assets/images/localbarberia.png')}
             className="w-full h-52"
             resizeMode="cover"
           />

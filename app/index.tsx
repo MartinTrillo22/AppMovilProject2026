@@ -13,7 +13,7 @@ export default function IndexScreen() {
 
             <View className="flex-1 px-6 pb-5">
                 {/* Logo Section - Top Area */}
-                <View className="flex-[4] justify-center items-center w-full mb-8 mt-5">
+                <View className="flex-[4] justify-center items-center w-full mb-8 mt-16">
                     <Image
                         source={require('../assets/images/logo.jpeg')}
                         className="flex-[1] h-full"
