@@ -14,7 +14,6 @@ export default function LoginScreen() {
     if (email.trim() === 'admin@gmail.com' && password === '123456') {
 
       router.replace('/(tabs)');
-      alert('Login exitoso');
     } else {
       Alert.alert('Error', 'El correo o la contraseña son incorrectos.');
     }
