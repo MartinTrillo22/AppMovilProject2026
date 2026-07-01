@@ -8,12 +8,10 @@ import {
 } from 'react-native';
 
 interface InputFieldProps extends TextInputProps {
-  containerClassName?: string;
   inputClassName?: string;
 }
 
 const InputField: React.FC<InputFieldProps> = ({
-  containerClassName = '',
   inputClassName = '',
   secureTextEntry,
   keyboardType = 'default',
@@ -25,7 +23,7 @@ const InputField: React.FC<InputFieldProps> = ({
 
   return (
     <View
-      className={`flex-row items-center bg-[#1c1c1e] rounded-lg h-[54px] px-4 w-full ${containerClassName}`}
+      className={`flex-row items-center bg-[#1c1c1e] rounded-lg h-[54px] px-4 w-full`}
     >
       <TextInput
         className={`flex-1 text-white text-base h-full ${inputClassName}`}

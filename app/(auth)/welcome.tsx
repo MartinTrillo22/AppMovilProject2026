@@ -1,8 +1,9 @@
-import { FontAwesome } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { Image, StatusBar, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import FacebookIcon from '../../assets/icons/facebook.svg';
+import GoogleIcon from '../../assets/icons/google.svg';
 import GoldButton from '../../src/components/ui/GoldButton';
 
 export default function WelcomeScreen() {
@@ -38,8 +39,8 @@ export default function WelcomeScreen() {
                             activeOpacity={0.8}
                             className="flex-row items-center bg-[#1c1c1e] h-[54px] rounded-full px-5 w-full mb-4"
                         >
-                            <View className="w-9 h-9 bg-[#3b5998] rounded-full items-center justify-center mr-4">
-                                <FontAwesome name="facebook" size={20} color="white" />
+                            <View className="w-9 h-9 rounded-full items-center justify-center mr-4">
+                                <FacebookIcon width={24} height={24} />
                             </View>
                             <Text className="text-white text-base font-semibold">
                                 Continuar con Facebook
@@ -51,8 +52,9 @@ export default function WelcomeScreen() {
                             activeOpacity={0.8}
                             className="flex-row items-center bg-[#1c1c1e] h-[54px] rounded-full px-5 w-full"
                         >
-                            <View className="w-9 h-9 bg-white rounded-full items-center justify-center mr-4">
-                                <FontAwesome name="google" size={20} color="#EA4335" />
+                            <View className="w-9 h-9 mr-4 items-center justify-center">
+                                {/* El SVG renderizará el logo oficial de Google con sus 4 colores exactos */}
+                                <GoogleIcon width={24} height={24} />
                             </View>
                             <Text className="text-white text-base font-semibold">
                                 Continuar con Google

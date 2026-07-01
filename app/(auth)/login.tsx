@@ -48,25 +48,23 @@ export default function LoginScreen() {
         </Text>
 
         {/* Form Fields */}
-        <View className="w-full">
+        <View className="w-full gap-4">
           <InputField
             placeholder="E-mail"
             value={email}
             onChangeText={setEmail}
             keyboardType="email-address"
-            containerClassName="mb-4"
           />
           <InputField
             placeholder="Contraseña"
             value={password}
             onChangeText={setPassword}
             secureTextEntry={true}
-            containerClassName="mb-8"
           />
         </View>
 
         {/* Login Button */}
-        <View className="items-center mb-8">
+        <View className="items-center my-8">
           <GoldButton
             title="Entrar"
             onPress={handleLogin}
