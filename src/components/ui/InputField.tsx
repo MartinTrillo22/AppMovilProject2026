@@ -9,10 +9,12 @@ import {
 
 interface InputFieldProps extends TextInputProps {
   inputClassName?: string;
+  containerClassName?: string;
 }
 
 const InputField: React.FC<InputFieldProps> = ({
   inputClassName = '',
+  containerClassName = '',
   secureTextEntry,
   keyboardType = 'default',
   placeholderTextColor = '#8e8e93',
@@ -23,7 +25,7 @@ const InputField: React.FC<InputFieldProps> = ({
 
   return (
     <View
-      className={`flex-row items-center bg-[#1c1c1e] rounded-lg h-[54px] px-4 w-full`}
+      className={`flex-row items-center bg-[#1c1c1e] rounded-lg h-[54px] px-4 w-full ${containerClassName}`}
     >
       <TextInput
         className={`flex-1 text-white text-base h-full ${inputClassName}`}

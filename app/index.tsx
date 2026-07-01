@@ -23,10 +23,10 @@ export default function IndexScreen() {
 
                 {/* Text Section - Middle Area (Vertically Centered) */}
                 <View className="flex-[6] mt-10 items-center">
-                    <Text className="text-white text-5xl text-center mb-4 font-normal font-radley">
+                    <Text className="text-white text-4xl text-center mb-3 font-normal font-radley">
                         Bienvenido
                     </Text>
-                    <Text className="text-white text-2xl text-center font-light leading-10 mt-8 font-radley w-4/5 mx-auto mb-10">
+                    <Text className="text-white text-xl text-center font-light leading-10 mt-6 font-radley w-4/5 mx-auto mb-2">
                         Tu próxima cita está a solo un toque de distancia.
                     </Text>
 

@@ -30,42 +30,35 @@ export default function RegisterScreen() {
         </TouchableOpacity>
 
         {/* Title */}
-        <Text className="text-white text-4xl font-normal font-radley text-center mt-8 mb-8">
+        <Text className="text-white text-4xl font-normal font-radley text-center mt-16 mb-8">
           Cree su Cuenta
         </Text>
 
         {/* Form Fields */}
-        <View className="w-full">
+        <View className="w-full gap-4 mb-6">
           <InputField
             placeholder="Nombre del usuario"
-            containerClassName="mb-4"
           />
           <InputField
             placeholder="Email"
             keyboardType="email-address"
-            containerClassName="mb-4"
+
           />
           <InputField
             placeholder="Celular"
             keyboardType="phone-pad"
-            containerClassName="mb-4"
+
           />
+
+
           <InputField
-            placeholder="Fecha de nascimento"
-            containerClassName="mb-4"
-          />
-          <InputField
-            placeholder="Sexo"
-            containerClassName="mb-4"
-          />
-          <InputField
-            placeholder="confirme su fecha"
-            containerClassName="mb-6"
+            placeholder="Contraseña"
+
           />
         </View>
 
         {/* Terms and Conditions Checkbox */}
-        <View className="flex-row items-center justify-center px-4 mb-8">
+        <View className="flex-row items-center justify-center px-4 mb-8 mt-6">
           <TouchableOpacity
             activeOpacity={0.7}
             onPress={() => setAgreed(!agreed)}
@@ -80,7 +73,7 @@ export default function RegisterScreen() {
         </View>
 
         {/* Register Button */}
-        <View className="items-center mb-8">
+        <View className="items-center mb-8 mt-4">
           <GoldButton
             title="Registrarse"
             onPress={() => { }}
@@ -90,7 +83,7 @@ export default function RegisterScreen() {
         </View>
 
         {/* Bottom Login Link */}
-        <View className="flex-row justify-center items-center">
+        <View className="flex-row justify-center items-center mb-6">
           <Text className="text-[#8e8e93] text-sm">¿Ya tienes una cuenta? </Text>
           <TouchableOpacity onPress={() => router.push('/(auth)/login')}>
             <Text className="text-white text-sm font-bold underline">Inicia sesión</Text>
