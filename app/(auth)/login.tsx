@@ -2,21 +2,34 @@ import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert, Image, ScrollView, StatusBar, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { getApiErrorMessage, login } from '../../infrastructure/service/AuthApi';
 import GoldButton from '../../src/components/ui/GoldButton';
 import InputField from '../../src/components/ui/InputField';
-import { login } from '../../infrastructure/service/AuthApi';
 
 export default function LoginScreen() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleLogin = async () => {
+    if (isLoading) {
+      return;
+    }
+
+    if (!email.trim() || !password) {
+      Alert.alert('Campos requeridos', 'Ingresa correo y contrasena para continuar.');
+      return;
+    }
+
     try {
-      await login({ email, password });
+      setIsLoading(true);
+      await login({ email: email.trim(), password });
       router.replace('/(tabs)');
     } catch (error) {
-      Alert.alert('Error', 'El correo o la contraseña son incorrectos.');
+      Alert.alert('Error', getApiErrorMessage(error));
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -67,7 +80,7 @@ export default function LoginScreen() {
         {/* Login Button */}
         <View className="items-center my-8">
           <GoldButton
-            title="Entrar"
+            title={isLoading ? 'Entrando...' : 'Entrar'}
             onPress={handleLogin}
             className="w-[70%] py-[14px]"
             textClassName="text-lg"
