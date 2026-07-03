@@ -4,17 +4,18 @@ import { Alert, Image, ScrollView, StatusBar, Text, TouchableOpacity, View } fro
 import { SafeAreaView } from 'react-native-safe-area-context';
 import GoldButton from '../../src/components/ui/GoldButton';
 import InputField from '../../src/components/ui/InputField';
+import { login } from '../../infrastructure/service/AuthApi';
 
 export default function LoginScreen() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleLogin = () => {
-    if (email.trim() === 'admin@gmail.com' && password === '123456') {
-
+  const handleLogin = async () => {
+    try {
+      await login({ email, password });
       router.replace('/(tabs)');
-    } else {
+    } catch (error) {
       Alert.alert('Error', 'El correo o la contraseña son incorrectos.');
     }
   };

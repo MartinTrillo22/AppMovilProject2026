@@ -1,14 +1,30 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { ScrollView, StatusBar, Text, TouchableOpacity, View } from 'react-native';
+import { Alert, ScrollView, StatusBar, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import GoldButton from '../../src/components/ui/GoldButton';
 import InputField from '../../src/components/ui/InputField';
+import { registro } from '../../infrastructure/service/AuthApi';
 
 export default function RegisterScreen() {
   const router = useRouter();
   const [agreed, setAgreed] = useState(false);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleRegister = async () => {
+    try {
+      await registro({ name, email, password, phoneNumber });
+      Alert.alert('Éxito', 'Cuenta creada correctamente.', [
+        { text: 'Aceptar', onPress: () => router.replace('/(auth)/login') }
+      ]);
+    } catch (error) {
+      Alert.alert('Error', 'Hubo un error al registrar el usuario.');
+    }
+  };
 
   return (
     <SafeAreaView className="flex-1 bg-black">
@@ -38,22 +54,26 @@ export default function RegisterScreen() {
         <View className="w-full gap-4 mb-6">
           <InputField
             placeholder="Nombre del usuario"
+            value={name}
+            onChangeText={setName}
           />
           <InputField
             placeholder="Email"
             keyboardType="email-address"
-
+            value={email}
+            onChangeText={setEmail}
           />
           <InputField
             placeholder="Celular"
             keyboardType="phone-pad"
-
+            value={phoneNumber}
+            onChangeText={setPhoneNumber}
           />
-
-
           <InputField
             placeholder="Contraseña"
-
+            secureTextEntry={true}
+            value={password}
+            onChangeText={setPassword}
           />
         </View>
 
@@ -76,7 +96,7 @@ export default function RegisterScreen() {
         <View className="items-center mb-8 mt-4">
           <GoldButton
             title="Registrarse"
-            onPress={() => { }}
+            onPress={handleRegister}
             className="w-[70%] py-[14px]"
             textClassName="text-lg"
           />
