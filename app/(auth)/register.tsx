@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { Alert, ScrollView, StatusBar, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, Alert, ScrollView, StatusBar, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import GoldButton from '../../src/components/ui/GoldButton';
 import InputField from '../../src/components/ui/InputField';
@@ -14,15 +14,92 @@ export default function RegisterScreen() {
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [nameError, setNameError] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [phoneNumberError, setPhoneNumberError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+
+  const handleNameChange = (text: string) => {
+    const limited = text.slice(0, 30);
+    setName(limited);
+    if (!limited) {
+      setNameError('El nombre de usuario es requerido.');
+    } else if (limited !== limited.trim()) {
+      setNameError('El nombre no debe tener espacios al inicio ni al final.');
+    } else {
+      setNameError('');
+    }
+  };
+
+  const handleEmailChange = (text: string) => {
+    setEmail(text);
+    if (!text) {
+      setEmailError('El correo electrónico es requerido.');
+    } else if (!text.includes('@')) {
+      setEmailError('El correo electrónico debe contener una "@".');
+    } else {
+      setEmailError('');
+    }
+  };
+
+  const handlePhoneNumberChange = (text: string) => {
+    const cleanText = text.replace(/[^0-9]/g, '');
+    setPhoneNumber(cleanText);
+    if (!cleanText) {
+      setPhoneNumberError('El celular es requerido.');
+    } else if (cleanText.length !== 9) {
+      setPhoneNumberError('El celular debe tener exactamente 9 dígitos.');
+    } else {
+      setPhoneNumberError('');
+    }
+  };
+
+  const handlePasswordChange = (text: string) => {
+    setPassword(text);
+    if (!text) {
+      setPasswordError('La contraseña es requerida.');
+    } else if (text.length < 6) {
+      setPasswordError('La contraseña debe tener mínimo 6 caracteres.');
+    } else {
+      setPasswordError('');
+    }
+  };
 
   const handleRegister = async () => {
+    if (isLoading) {
+      return;
+    }
+    const trimmedName = name.trim();
+    if (!trimmedName || name !== name.trim() || name.length > 30) {
+      setNameError('El nombre de usuario no es válido.');
+      return;
+    }
+    if (!email || !email.includes('@')) {
+      setEmailError('El correo electrónico no es válido.');
+      return;
+    }
+    if (!phoneNumber || phoneNumber.length !== 9) {
+      setPhoneNumberError('El celular debe tener 9 dígitos.');
+      return;
+    }
+    if (!password || password.length < 6) {
+      setPasswordError('La contraseña debe tener mínimo 6 caracteres.');
+      return;
+    }
+    if (!agreed) {
+      Alert.alert('Términos', 'Debe aceptar los términos y condiciones.');
+      return;
+    }
+
     try {
-      await registro({ name, email, password, phoneNumber });
-      Alert.alert('Éxito', 'Cuenta creada correctamente.', [
-        { text: 'Aceptar', onPress: () => router.replace('/(auth)/login') }
-      ]);
+      setIsLoading(true);
+      await registro({ name: trimmedName, email, password, phoneNumber });
+      router.replace('/(tabs)');
     } catch (error) {
       Alert.alert('Error', 'Hubo un error al registrar el usuario.');
+      setIsLoading(false);
     }
   };
 
@@ -52,29 +129,52 @@ export default function RegisterScreen() {
 
         {/* Form Fields */}
         <View className="w-full gap-4 mb-6">
-          <InputField
-            placeholder="Nombre del usuario"
-            value={name}
-            onChangeText={setName}
-          />
-          <InputField
-            placeholder="Email"
-            keyboardType="email-address"
-            value={email}
-            onChangeText={setEmail}
-          />
-          <InputField
-            placeholder="Celular"
-            keyboardType="phone-pad"
-            value={phoneNumber}
-            onChangeText={setPhoneNumber}
-          />
-          <InputField
-            placeholder="Contraseña"
-            secureTextEntry={true}
-            value={password}
-            onChangeText={setPassword}
-          />
+          <View>
+            <InputField
+              placeholder="Nombre del usuario"
+              value={name}
+              onChangeText={handleNameChange}
+            />
+            {nameError ? (
+              <Text className="text-red-500 text-xs mt-1 ml-1">{nameError}</Text>
+            ) : null}
+          </View>
+
+          <View>
+            <InputField
+              placeholder="Email"
+              keyboardType="email-address"
+              value={email}
+              onChangeText={handleEmailChange}
+            />
+            {emailError ? (
+              <Text className="text-red-500 text-xs mt-1 ml-1">{emailError}</Text>
+            ) : null}
+          </View>
+
+          <View>
+            <InputField
+              placeholder="Celular"
+              keyboardType="phone-pad"
+              value={phoneNumber}
+              onChangeText={handlePhoneNumberChange}
+            />
+            {phoneNumberError ? (
+              <Text className="text-red-500 text-xs mt-1 ml-1">{phoneNumberError}</Text>
+            ) : null}
+          </View>
+
+          <View>
+            <InputField
+              placeholder="Contraseña"
+              secureTextEntry={true}
+              value={password}
+              onChangeText={handlePasswordChange}
+            />
+            {passwordError ? (
+              <Text className="text-red-500 text-xs mt-1 ml-1">{passwordError}</Text>
+            ) : null}
+          </View>
         </View>
 
         {/* Terms and Conditions Checkbox */}
@@ -110,6 +210,14 @@ export default function RegisterScreen() {
           </TouchableOpacity>
         </View>
       </ScrollView>
+      {isLoading && (
+        <View className="absolute inset-0 bg-black/85 justify-center items-center z-50">
+          <ActivityIndicator size="large" color="#e9b978" />
+          <Text className="text-white text-lg font-light mt-4 tracking-wider">
+            Creando tu cuenta...
+          </Text>
+        </View>
+      )}
     </SafeAreaView>
   );
 }
