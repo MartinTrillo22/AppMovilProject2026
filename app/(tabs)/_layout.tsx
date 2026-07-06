@@ -5,6 +5,7 @@ import React from 'react';
 export default function TabLayout() {
   return (
     <Tabs
+      /*sceneContainerStyle={{ backgroundColor: '#000000' }}*/
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: '#EAB308',
@@ -45,6 +46,12 @@ export default function TabLayout() {
           tabBarIcon: ({ color, focused }) => (
             <Ionicons name={focused ? "settings" : "settings-outline"} size={26} color={color} />
           ),
+        }}
+      />
+      <Tabs.Screen
+        name="settings/edit-profile"
+        options={{
+          href: null,
         }}
       />
     </Tabs>
