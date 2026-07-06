@@ -5,25 +5,25 @@ import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 interface Barber {
     id: string;
     name: string;
-    imageUrl: string;
+    imageUrl: any;
 }
 
 // Datos simulados (Mock Data) basados en tus diseños
 const mockStaff: Barber[] = [
     {
         id: '1',
-        name: 'Mano Brown',
-        imageUrl: 'https://i.pravatar.cc/150?img=11', // URLs temporales de prueba
+        name: 'Mariano',
+        imageUrl: require('../../../assets/images/barbero1-Mariano.jpg'),
     },
     {
         id: '2',
-        name: 'Neymar',
-        imageUrl: 'https://i.pravatar.cc/150?img=12',
+        name: 'Luis',
+        imageUrl: require('../../../assets/images/barber2-luis.jpg'),
     },
     {
         id: '3',
-        name: 'Shelby',
-        imageUrl: 'https://i.pravatar.cc/150?img=13',
+        name: 'Jose',
+        imageUrl: require('../../../assets/images/barber3-jose.jpg'),
     },
 ];
 
@@ -50,7 +50,7 @@ export default function StaffCarousel() {
                         {/* Contenedor de la foto con borde dorado suave */}
                         <View className="w-20 h-20 rounded-full border border-yellow-600/30 overflow-hidden mb-2">
                             <Image
-                                source={{ uri: barber.imageUrl }}
+                                source={typeof barber.imageUrl === 'string' ? { uri: barber.imageUrl } : barber.imageUrl}
                                 className="w-full h-full object-cover"
                             />
                         </View>

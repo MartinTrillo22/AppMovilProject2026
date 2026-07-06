@@ -11,8 +11,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 const HomeIndex = () => {
   return (
-    <SafeAreaView className="flex-1 bg-black" edges={['top', 'left', 'right', 'bottom']}>
-      <ScrollView className="flex-1" showsVerticalScrollIndicator={false}>
+    <SafeAreaView className="flex-1 bg-black pt-4 px-4" edges={['top', 'left', 'right', 'bottom']}>
+      <ScrollView className="flex-1 bg-black" showsVerticalScrollIndicator={false}>
 
         {/* Header Superior */}
         <HomeHeader />
