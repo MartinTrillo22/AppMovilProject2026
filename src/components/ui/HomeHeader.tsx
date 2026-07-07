@@ -1,36 +1,38 @@
 import { Feather } from '@expo/vector-icons';
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
+import { useTheme } from '../../ThemeContext';
 
 const HomeHeader = () => {
+    const userName = "Usuario";
+    const initial = userName.charAt(0).toUpperCase();
+    const { colors, isDarkMode } = useTheme();
+
     return (
         <View className="flex-row justify-between items-center px-4 py-4 mt-2">
             <View className="flex-row items-center">
-                {/* Checkerboard Avatar */}
-                <View className="w-12 h-12 rounded-full overflow-hidden bg-white flex-row flex-wrap border border-gray-800">
-                    {Array.from({ length: 16 }).map((_, index) => {
-                        const row = Math.floor(index / 4);
-                        const col = index % 4;
-                        const isBlack = (row + col) % 2 === 0;
-                        return (
-                            <View
-                                key={index}
-                                className={`w-3 h-3 ${isBlack ? 'bg-black' : 'bg-white'}`}
-                            />
-                        );
-                    })}
+                {/* Initial Letter Avatar */}
+                <View className={`w-12 h-12 rounded-full bg-[#e9b978] items-center justify-center border ${isDarkMode ? 'border-gray-800' : 'border-[#e9b978]'}`}>
+                    <Text className="text-[#2b1d3f] text-2xl font-bold font-radley">
+                        {initial}
+                    </Text>
                 </View>
-                <Text className="text-white text-base font-normal ml-3">
-                    Bienvenido, Usuario
-                </Text>
+                <View className="ml-3">
+                    <Text className={`${colors.subText} text-sm font-normal`}>
+                        Bienvenido
+                    </Text>
+                    <Text className={`${colors.text} text-2xl font-bold font-radley`}>
+                        {userName}
+                    </Text>
+                </View>
             </View>
 
             <View className="flex-row items-center gap-4">
                 <TouchableOpacity>
-                    <Feather name="bell" size={26} color="white" />
+                    <Feather name="bell" size={26} color={colors.icon} />
                 </TouchableOpacity>
                 <TouchableOpacity>
-                    <Feather name="user-plus" size={26} color="white" />
+                    <Feather name="user-plus" size={26} color={colors.icon} />
                 </TouchableOpacity>
             </View>
         </View>

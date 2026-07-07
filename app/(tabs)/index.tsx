@@ -8,11 +8,14 @@ import SearchBar1 from '@/src/components/ui/SearchBar1';
 import React from 'react';
 import { ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useTheme } from '@/src/ThemeContext';
 
 const HomeIndex = () => {
+  const { colors } = useTheme();
+
   return (
-    <SafeAreaView className="flex-1 bg-black pt-4 px-4" edges={['top', 'left', 'right', 'bottom']}>
-      <ScrollView className="flex-1 bg-black" showsVerticalScrollIndicator={false}>
+    <SafeAreaView className={`flex-1 ${colors.bg} pt-4 px-4`} edges={['top', 'left', 'right', 'bottom']}>
+      <ScrollView className={`flex-1 ${colors.bg}`} showsVerticalScrollIndicator={false}>
 
         {/* Header Superior */}
         <HomeHeader />

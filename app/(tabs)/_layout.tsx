@@ -1,18 +1,20 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 import React from 'react';
+import { useTheme } from '../../src/ThemeContext';
 
 export default function TabLayout() {
+  const { isDarkMode, colors } = useTheme();
+
   return (
     <Tabs
-      /*sceneContainerStyle={{ backgroundColor: '#000000' }}*/
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: '#EAB308',
-        tabBarInactiveTintColor: '#6B7280',
+        tabBarInactiveTintColor: isDarkMode ? '#6B7280' : '#684920',
         tabBarShowLabel: false,
         tabBarStyle: {
-          backgroundColor: '#000000',
+          backgroundColor: isDarkMode ? '#000000' : '#E5E5E5',
           borderTopWidth: 2,
           borderTopColor: '#EAB308',
           height: 80,

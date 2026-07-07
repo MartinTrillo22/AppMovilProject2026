@@ -5,6 +5,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
 import "../global.css";
+import { ThemeProviderWrapper, useTheme } from '../src/ThemeContext';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -15,6 +16,28 @@ const MyDarkTheme = {
     background: '#000000',
   },
 };
+
+function RootNavigator() {
+  const { isDarkMode } = useTheme();
+
+  const currentTheme = {
+    ...MyDarkTheme,
+    colors: {
+      ...MyDarkTheme.colors,
+      background: isDarkMode ? '#000000' : '#E5E5E5',
+    },
+  };
+
+  return (
+    <ThemeProvider value={currentTheme}>
+      <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: isDarkMode ? '#000000' : '#E5E5E5' } }}>
+        <Stack.Screen name="index" />
+        <Stack.Screen name="(auth)" />
+        <Stack.Screen name="(tabs)" options={{ animation: 'fade' }} />
+      </Stack>
+    </ThemeProvider>
+  );
+}
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -33,12 +56,8 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={MyDarkTheme}>
-      <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: '#000000' } }}>
-        <Stack.Screen name="index" />
-        <Stack.Screen name="(auth)" />
-        <Stack.Screen name="(tabs)" options={{ animation: 'fade' }} />
-      </Stack>
-    </ThemeProvider>
+    <ThemeProviderWrapper>
+      <RootNavigator />
+    </ThemeProviderWrapper>
   );
 }

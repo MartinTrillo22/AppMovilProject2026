@@ -1,10 +1,13 @@
 import React from 'react';
 import { Image, Text, View } from 'react-native';
+import { useTheme } from '../../ThemeContext';
 
 const LocationCard = () => {
+    const { colors } = useTheme();
+
     return (
         <View className="mt-4 mb-8">
-            <Text className="text-gray-400 text-sm px-4 mb-3">
+            <Text className={`${colors.subText} text-sm px-4 mb-3`}>
                 Donde estamos localizados
             </Text>
             <Image
@@ -13,10 +16,10 @@ const LocationCard = () => {
                 className="w-full h-52"
                 resizeMode="cover"
             />
-            <View className="px-4 py-4 bg-black">
-                <Text className="text-white font-bold text-lg mb-1">PEDROSHOP.</Text>
-                <Text className="text-gray-400 text-sm mb-1">Av. Peru 123, Los Olivos</Text>
-                <Text className="text-gray-400 text-sm">Abierto - 08:00 h</Text>
+            <View className={`px-4 py-4 ${colors.bg}`}>
+                <Text className={`${colors.text} font-bold text-lg mb-1`}>PEDROSHOP.</Text>
+                <Text className={`${colors.subText} text-sm mb-1`}>Av. Peru 123, Los Olivos</Text>
+                <Text className={`${colors.subText} text-sm`}>Abierto - 08:00 h</Text>
             </View>
         </View>
     );

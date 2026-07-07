@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { useTheme } from '../../ThemeContext';
 
 // Definimos la estructura de los datos con TypeScript
 interface Barber {
@@ -28,10 +29,12 @@ const mockStaff: Barber[] = [
 ];
 
 export default function StaffCarousel() {
+    const { colors, isDarkMode } = useTheme();
+
     return (
         <View className="mt-6 mb-4 pl-4 justify-center items-center">
             {/* Título de la sección */}
-            <Text className="text-white text-lg font-bold mb-3 tracking-widest uppercase">
+            <Text className={`${colors.text} text-lg font-bold mb-3 tracking-widest uppercase`}>
                 Nuestro Staff
             </Text>
 
@@ -48,7 +51,7 @@ export default function StaffCarousel() {
                         activeOpacity={0.7}
                     >
                         {/* Contenedor de la foto con borde dorado suave */}
-                        <View className="w-20 h-20 rounded-full border border-yellow-600/30 overflow-hidden mb-2">
+                        <View className={`w-20 h-20 rounded-full border ${isDarkMode ? 'border-yellow-600/30' : 'border-[#e9b978]'} overflow-hidden mb-2`}>
                             <Image
                                 source={typeof barber.imageUrl === 'string' ? { uri: barber.imageUrl } : barber.imageUrl}
                                 className="w-full h-full object-cover"
@@ -56,7 +59,7 @@ export default function StaffCarousel() {
                         </View>
 
                         {/* Nombre del barbero */}
-                        <Text className="text-gray-300 text-sm font-medium">
+                        <Text className={`${colors.subText} text-sm font-medium`}>
                             {barber.name}
                         </Text>
                     </TouchableOpacity>
