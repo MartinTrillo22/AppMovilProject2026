@@ -58,13 +58,9 @@ export default function RootLayout() {
 
   return (
     <AuthProvider>
-      <ThemeProvider value={MyDarkTheme}>
-        <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: '#000000' } }}>
-          <Stack.Screen name="index" />
-          <Stack.Screen name="(auth)" />
-          <Stack.Screen name="(tabs)" options={{ animation: 'fade' }} />
-        </Stack>
-      </ThemeProvider>
+      <ThemeProviderWrapper>
+        <RootNavigator />
+      </ThemeProviderWrapper>
     </AuthProvider>
   );
 }

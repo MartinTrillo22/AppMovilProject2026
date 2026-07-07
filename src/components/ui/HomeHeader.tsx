@@ -4,9 +4,17 @@ import { Text, TouchableOpacity, View } from 'react-native';
 import { useTheme } from '../../ThemeContext';
 import { useAuth } from '../../context/AuthContext';
 
+const toTitleCase = (str: string) => {
+    return str
+        .toLowerCase()
+        .split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+};
+
 const HomeHeader = () => {
     const { user } = useAuth();
-    const userName = "Usuario";
+    const userName = toTitleCase(user?.fullName || "Usuario");
     const initial = userName.charAt(0).toUpperCase();
     const { colors, isDarkMode } = useTheme();
 
@@ -19,11 +27,8 @@ const HomeHeader = () => {
                         {initial}
                     </Text>
                 </View>
-                <Text className="text-white text-base font-normal ml-3">
-                    Bienvenido, {user?.fullName || 'Usuario'}
-                </Text>
                 <View className="ml-3">
-                    <Text className={`${colors.subText} text-sm font-normal`}>
+                    <Text className={`${colors.subText} text-xs font-normal`}>
                         Bienvenido
                     </Text>
                     <Text className={`${colors.text} text-2xl font-bold font-radley`}>

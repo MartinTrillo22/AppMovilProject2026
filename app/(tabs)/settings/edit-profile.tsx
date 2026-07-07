@@ -8,11 +8,20 @@ import GoldButton from '../../../src/components/ui/GoldButton';
 import InputField from '../../../src/components/ui/InputField';
 import { useTheme } from '../../../src/ThemeContext';
 
+const toTitleCase = (str: string) => {
+  if (!str) return "";
+  return str
+    .toLowerCase()
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+};
+
 export default function EditProfileScreen() {
   const router = useRouter();
   const { user, updateUser } = useAuth();
 
-  const [fullName, setFullName] = useState(user?.fullName || '');
+  const [fullName, setFullName] = useState(toTitleCase(user?.fullName || ''));
   const [email, setEmail] = useState(user?.email || '');
   const [phone, setPhone] = useState(user?.phone || '');
   const [password, setPassword] = useState('');
@@ -21,7 +30,7 @@ export default function EditProfileScreen() {
     if (!user) return;
     await updateUser({
       id: user.id,
-      fullName,
+      fullName: toTitleCase(fullName.trim()),
       email,
       password: password || '123456',
       role: user.role,
