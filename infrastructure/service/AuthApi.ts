@@ -52,3 +52,9 @@ export const registro = async (data: RegistroData): Promise<Usuario> => {
   const response = await barberiaApi.post<Usuario>('/registro', data);
   return response.data;
 };
+
+export const updateUsuario = async (id: number, data: any): Promise<Usuario> => {
+  const response = await barberiaApi.put<Usuario>(`/usuarios/${id}`, data);
+  return response.data;
+};
+

@@ -4,6 +4,7 @@ import React from 'react';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '../../../src/ThemeContext';
+import { useAuth } from '../../../src/context/AuthContext';
 
 export default function SettingsScreen() {
   const router = useRouter();
@@ -15,6 +16,7 @@ export default function SettingsScreen() {
   const iconColor = colors.icon;
   const dividerClass = colors.divider;
 
+  const { user } = useAuth();
   return (
     <SafeAreaView className={`flex-1 ${bgClass} pt-4 px-4`} edges={['top', 'left', 'right']}>
       {/* Header */}
@@ -32,8 +34,8 @@ export default function SettingsScreen() {
             source={require('../../../assets/images/photoAdmin1.jpg')}
             className={`w-28 h-28 rounded-full mb-4 border ${isDarkMode ? 'border-gray-800' : 'border-[#e9b978]'}`}
           />
-          <Text className={`${textClass} text-lg font-semibold mb-1`}>Miguel Angel</Text>
-          <Text className={`${subTextClass} text-sm`}>admin@gmail.com</Text>
+          <Text className={`${textClass} text-lg font-semibold mb-1`}>{user?.fullName || 'Pedro Trillo'}</Text>
+          <Text className={`${subTextClass} text-sm`}>{user?.email || 'pedro@gmail.com'}</Text>
         </View>
 
         {/* Divider Line */}
@@ -42,7 +44,7 @@ export default function SettingsScreen() {
         {/* Settings Options */}
         <View className="px-8 py-2">
 
-          <TouchableOpacity 
+          <TouchableOpacity
             onPress={() => router.push('/settings/edit-profile')}
             className="flex-row items-center justify-between py-5"
           >
@@ -71,7 +73,7 @@ export default function SettingsScreen() {
             <Ionicons name="chevron-forward" size={20} color={iconColor} />
           </TouchableOpacity>
 
-          <TouchableOpacity 
+          <TouchableOpacity
             activeOpacity={0.8}
             onPress={toggleTheme}
             className="flex-row items-center justify-between py-5"
@@ -81,9 +83,8 @@ export default function SettingsScreen() {
               <Text className={`${textClass} text-base`}>Modo Oscuro</Text>
             </View>
             {/* Custom Gold Switch Toggle */}
-            <View className={`w-11 h-6 rounded-full border border-[#EAB308] justify-center px-1 ${
-              isDarkMode ? 'bg-black items-end' : 'bg-gray-200 items-start'
-            }`}>
+            <View className={`w-11 h-6 rounded-full border border-[#EAB308] justify-center px-1 ${isDarkMode ? 'bg-black items-end' : 'bg-gray-200 items-start'
+              }`}>
               <View className="w-4 h-4 rounded-full bg-[#EAB308]" />
             </View>
           </TouchableOpacity>

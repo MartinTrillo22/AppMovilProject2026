@@ -2,12 +2,14 @@ import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert, Image, ScrollView, StatusBar, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { getApiErrorMessage, login } from '../../infrastructure/service/AuthApi';
+import { getApiErrorMessage } from '../../infrastructure/service/AuthApi';
+import { useAuth } from '../../src/context/AuthContext';
 import GoldButton from '../../src/components/ui/GoldButton';
 import InputField from '../../src/components/ui/InputField';
 
 export default function LoginScreen() {
   const router = useRouter();
+  const { loginUser } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -24,7 +26,7 @@ export default function LoginScreen() {
 
     try {
       setIsLoading(true);
-      await login({ email: email.trim(), password });
+      await loginUser({ email: email.trim(), password });
       router.replace('/(tabs)');
     } catch (error) {
       Alert.alert('Error', getApiErrorMessage(error));

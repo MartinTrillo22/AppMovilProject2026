@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 import "../global.css";
 import { ThemeProviderWrapper, useTheme } from '../src/ThemeContext';
+import { AuthProvider } from '../src/context/AuthContext';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -56,8 +57,14 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProviderWrapper>
-      <RootNavigator />
-    </ThemeProviderWrapper>
+    <AuthProvider>
+      <ThemeProvider value={MyDarkTheme}>
+        <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: '#000000' } }}>
+          <Stack.Screen name="index" />
+          <Stack.Screen name="(auth)" />
+          <Stack.Screen name="(tabs)" options={{ animation: 'fade' }} />
+        </Stack>
+      </ThemeProvider>
+    </AuthProvider>
   );
 }
