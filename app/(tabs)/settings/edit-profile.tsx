@@ -1,14 +1,35 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import React from 'react';
+import React, { useState } from 'react';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useAuth } from '../../../src/context/AuthContext';
 import GoldButton from '../../../src/components/ui/GoldButton';
 import InputField from '../../../src/components/ui/InputField';
 import { useTheme } from '../../../src/ThemeContext';
 
 export default function EditProfileScreen() {
   const router = useRouter();
+  const { user, updateUser } = useAuth();
+
+  const [fullName, setFullName] = useState(user?.fullName || '');
+  const [email, setEmail] = useState(user?.email || '');
+  const [phone, setPhone] = useState(user?.phone || '');
+  const [password, setPassword] = useState('');
+
+  const handleSave = async () => {
+    if (!user) return;
+    await updateUser({
+      id: user.id,
+      fullName,
+      email,
+      password: password || '123456',
+      role: user.role,
+      phone,
+      isActive: user.isActive
+    });
+    router.back();
+  };
   const { colors, isDarkMode } = useTheme();
 
   return (
@@ -21,8 +42,8 @@ export default function EditProfileScreen() {
         <Text className={`${colors.text} text-2xl font-bold`}>Editar perfil</Text>
       </View>
 
-      <ScrollView 
-        className="flex-1 px-8" 
+      <ScrollView
+        className="flex-1 px-8"
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 40 }}
       >
@@ -49,7 +70,8 @@ export default function EditProfileScreen() {
               Nombre completo
             </Text>
             <InputField
-              value="Miguel Angel"
+              value={fullName}
+              onChangeText={setFullName}
               placeholder="Nombre completo"
             />
           </View>
@@ -59,7 +81,8 @@ export default function EditProfileScreen() {
               Correo electrónico
             </Text>
             <InputField
-              value="admin@gmail.com"
+              value={email}
+              onChangeText={setEmail}
               placeholder="Correo electrónico"
               keyboardType="email-address"
             />
@@ -70,7 +93,8 @@ export default function EditProfileScreen() {
               Número de teléfono
             </Text>
             <InputField
-              value="987654321"
+              value={phone}
+              onChangeText={setPhone}
               placeholder="Número de teléfono"
               keyboardType="phone-pad"
             />
@@ -81,6 +105,8 @@ export default function EditProfileScreen() {
               Contraseña nueva
             </Text>
             <InputField
+              value={password}
+              onChangeText={setPassword}
               placeholder="Nueva contraseña"
               secureTextEntry={true}
             />
@@ -91,6 +117,7 @@ export default function EditProfileScreen() {
         <View className="items-center mt-10">
           <GoldButton
             title="Guardar cambios"
+            onPress={handleSave}
             className="w-full py-[14px]"
             textClassName="text-lg"
           />

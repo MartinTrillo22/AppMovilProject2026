@@ -5,10 +5,11 @@ import { ActivityIndicator, Alert, ScrollView, StatusBar, Text, TouchableOpacity
 import { SafeAreaView } from 'react-native-safe-area-context';
 import GoldButton from '../../src/components/ui/GoldButton';
 import InputField from '../../src/components/ui/InputField';
-import { registro } from '../../infrastructure/service/AuthApi';
+import { useAuth } from '../../src/context/AuthContext';
 
 export default function RegisterScreen() {
   const router = useRouter();
+  const { registroUser } = useAuth();
   const [agreed, setAgreed] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -95,7 +96,7 @@ export default function RegisterScreen() {
 
     try {
       setIsLoading(true);
-      await registro({ name: trimmedName, email, password, phoneNumber });
+      await registroUser({ name: trimmedName, email, password, phoneNumber });
       router.replace('/(tabs)');
     } catch (error) {
       Alert.alert('Error', 'Hubo un error al registrar el usuario.');
