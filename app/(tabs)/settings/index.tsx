@@ -6,6 +6,15 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '../../../src/ThemeContext';
 import { useAuth } from '../../../src/context/AuthContext';
 
+const formatName = (name: string) => {
+  if (!name) return "";
+  return name
+    .toLowerCase()
+    .split(' ')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+};
+
 export default function SettingsScreen() {
   const router = useRouter();
   const { isDarkMode, toggleTheme, colors } = useTheme();
@@ -16,7 +25,7 @@ export default function SettingsScreen() {
   const iconColor = colors.icon;
   const dividerClass = colors.divider;
 
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   return (
     <SafeAreaView className={`flex-1 ${bgClass} pt-4 px-4`} edges={['top', 'left', 'right']}>
       {/* Header */}
@@ -34,7 +43,7 @@ export default function SettingsScreen() {
             source={require('../../../assets/images/photoAdmin1.jpg')}
             className={`w-28 h-28 rounded-full mb-4 border ${isDarkMode ? 'border-gray-800' : 'border-[#e9b978]'}`}
           />
-          <Text className={`${textClass} text-lg font-semibold mb-1`}>{user?.fullName || 'Pedro Trillo'}</Text>
+          <Text className={`${textClass} text-lg font-semibold mb-1`}>{formatName(user?.fullName || 'Pedro Trillo')}</Text>
           <Text className={`${subTextClass} text-sm`}>{user?.email || 'pedro@gmail.com'}</Text>
         </View>
 
@@ -96,6 +105,21 @@ export default function SettingsScreen() {
               <Text className={`${textClass} text-base`}>Seguridad</Text>
             </View>
             <Ionicons name="chevron-forward" size={20} color={iconColor} />
+          </TouchableOpacity>
+
+          {/* Cerrar sesión */}
+          <TouchableOpacity
+            onPress={() => {
+              logout();
+              router.replace('/(auth)/login');
+            }}
+            className="flex-row items-center justify-between py-5"
+          >
+            <View className="flex-row items-center gap-4">
+              <Ionicons name="log-out-outline" size={22} color="#EF4444" />
+              <Text className="text-red-500 text-base">Cerrar sesión</Text>
+            </View>
+            <Ionicons name="chevron-forward" size={20} color="#EF4444" />
           </TouchableOpacity>
 
         </View>
