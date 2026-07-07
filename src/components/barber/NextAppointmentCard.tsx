@@ -1,20 +1,20 @@
 import { Feather } from '@expo/vector-icons';
 import React from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
+import { useTheme } from '../../ThemeContext';
 
 const NextAppointmentCard = () => {
-    // Cuando conectes tu base de datos, aquí validarás si hay una cita activa.
-    // Ejemplo: if (!hasActiveAppointment) return null;
+    const { colors, isDarkMode } = useTheme();
 
     return (
-        <View className="bg-[#1C1C1E] mx-4 my-2 p-4 rounded-2xl border border-yellow-600/20">
-            <Text className="text-gray-400 text-xs font-bold tracking-wider mb-2 uppercase">
+        <View className={`${colors.cardBg} mx-4 my-2 p-4 rounded-2xl border ${isDarkMode ? 'border-yellow-600/20' : 'border-[#e9b978]'}`}>
+            <Text className={`${colors.subText} text-xs font-bold tracking-wider mb-2 uppercase`}>
                 Tu próxima cita
             </Text>
 
             <View className="flex-row justify-between items-center">
                 <View className="flex-1 pr-4">
-                    <Text className="text-white text-base font-semibold">
+                    <Text className={`${colors.text} text-base font-semibold`}>
                         Mañana, 12:00 PM
                     </Text>
                     <Text className="text-[#EAB308] text-sm mt-1 font-medium">
@@ -23,11 +23,11 @@ const NextAppointmentCard = () => {
                 </View>
 
                 <TouchableOpacity
-                    className="bg-[#2C2C2E] px-4 py-2 rounded-xl flex-row items-center"
+                    className={`${isDarkMode ? 'bg-[#2C2C2E]' : 'bg-[#E5E5E5]'} px-4 py-2 rounded-xl flex-row items-center border ${colors.border}`}
                     activeOpacity={0.7}
                 >
-                    <Text className="text-white font-bold text-xs mr-1">VER</Text>
-                    <Feather name="chevron-right" size={16} color="white" />
+                    <Text className={`${colors.text} font-bold text-xs mr-1`}>VER</Text>
+                    <Feather name="chevron-right" size={16} color={colors.icon} />
                 </TouchableOpacity>
             </View>
         </View>

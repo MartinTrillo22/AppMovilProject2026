@@ -5,18 +5,20 @@ import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import GoldButton from '../../../src/components/ui/GoldButton';
 import InputField from '../../../src/components/ui/InputField';
+import { useTheme } from '../../../src/ThemeContext';
 
 export default function EditProfileScreen() {
   const router = useRouter();
+  const { colors, isDarkMode } = useTheme();
 
   return (
-    <SafeAreaView className="flex-1 bg-black" edges={['top', 'left', 'right']}>
+    <SafeAreaView className={`flex-1 ${colors.bg}`} edges={['top', 'left', 'right']}>
       {/* Header */}
       <View className="flex-row items-center px-6 pt-6 pb-4 gap-4">
         <TouchableOpacity onPress={() => router.back()}>
-          <Ionicons name="arrow-back" size={24} color="white" />
+          <Ionicons name="arrow-back" size={24} color={colors.icon} />
         </TouchableOpacity>
-        <Text className="text-white text-2xl font-bold">Editar perfil</Text>
+        <Text className={`${colors.text} text-2xl font-bold`}>Editar perfil</Text>
       </View>
 
       <ScrollView 
@@ -29,9 +31,9 @@ export default function EditProfileScreen() {
           <View className="relative">
             <Image
               source={require('../../../assets/images/photoAdmin1.jpg')}
-              className="w-28 h-28 rounded-full border border-gray-800"
+              className={`w-28 h-28 rounded-full border ${isDarkMode ? 'border-gray-800' : 'border-[#e9b978]'}`}
             />
-            <TouchableOpacity className="absolute bottom-0 right-0 bg-[#e9b978] w-8 h-8 rounded-full items-center justify-center border-2 border-black">
+            <TouchableOpacity className={`absolute bottom-0 right-0 bg-[#e9b978] w-8 h-8 rounded-full items-center justify-center border-2 ${isDarkMode ? 'border-black' : 'border-[#E5E5E5]'}`}>
               <Ionicons name="camera" size={16} color="#2b1d3f" />
             </TouchableOpacity>
           </View>
@@ -43,7 +45,7 @@ export default function EditProfileScreen() {
         {/* Form Fields */}
         <View className="gap-5">
           <View className="gap-1.5">
-            <Text className="text-gray-400 text-xs font-semibold uppercase tracking-wider pl-1">
+            <Text className={`${colors.subText} text-xs font-semibold uppercase tracking-wider pl-1`}>
               Nombre completo
             </Text>
             <InputField
@@ -53,7 +55,7 @@ export default function EditProfileScreen() {
           </View>
 
           <View className="gap-1.5">
-            <Text className="text-gray-400 text-xs font-semibold uppercase tracking-wider pl-1">
+            <Text className={`${colors.subText} text-xs font-semibold uppercase tracking-wider pl-1`}>
               Correo electrónico
             </Text>
             <InputField
@@ -64,7 +66,7 @@ export default function EditProfileScreen() {
           </View>
 
           <View className="gap-1.5">
-            <Text className="text-gray-400 text-xs font-semibold uppercase tracking-wider pl-1">
+            <Text className={`${colors.subText} text-xs font-semibold uppercase tracking-wider pl-1`}>
               Número de teléfono
             </Text>
             <InputField
@@ -75,7 +77,7 @@ export default function EditProfileScreen() {
           </View>
 
           <View className="gap-1.5">
-            <Text className="text-gray-400 text-xs font-semibold uppercase tracking-wider pl-1">
+            <Text className={`${colors.subText} text-xs font-semibold uppercase tracking-wider pl-1`}>
               Contraseña nueva
             </Text>
             <InputField
