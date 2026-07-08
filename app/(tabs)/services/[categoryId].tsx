@@ -8,27 +8,52 @@ import {
   Text,
   TouchableOpacity,
   View,
+  useWindowDimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { CategoriaServicio } from '@/domain/Category';
 import { Servicio, getServiceName, getServicePrice } from '@/domain/Service';
+import { getCategorias } from '@/infrastructure/service/CategoryApi';
 import { getServicios } from '@/infrastructure/service/ServiceApi';
 import { useTheme } from '@/src/ThemeContext';
 
-const extraOptions = [
-  { label: 'Cortes', icon: <Feather name="scissors" size={18} color="#E9B978" /> },
-  { label: 'Tinte', icon: <MaterialCommunityIcons name="palette" size={19} color="#E9B978" /> },
-  { label: 'Cejas', icon: <MaterialCommunityIcons name="eye-outline" size={19} color="#E9B978" /> },
-];
+const getCategoryIcon = (name: string, active: boolean) => {
+  const color = active ? '#2b1d3f' : '#E9B978';
+  const normalized = name.toLowerCase();
+
+  if (normalized.includes('corte')) {
+    return <Feather name="scissors" size={18} color={color} />;
+  }
+  if (normalized.includes('barba')) {
+    return <MaterialCommunityIcons name="mustache" size={20} color={color} />;
+  }
+  if (normalized.includes('tinte')) {
+    return <MaterialCommunityIcons name="palette" size={20} color={color} />;
+  }
+  if (normalized.includes('ceja')) {
+    return <MaterialCommunityIcons name="eye-outline" size={20} color={color} />;
+  }
+
+  return <Feather name="tag" size={18} color={color} />;
+};
 
 export default function ServicesByCategoryScreen() {
   const { categoryId, name } = useLocalSearchParams<{ categoryId: string; name?: string }>();
   const { colors, isDarkMode } = useTheme();
+  const { height } = useWindowDimensions();
+  const [categories, setCategories] = useState<CategoriaServicio[]>([]);
   const [services, setServices] = useState<Servicio[]>([]);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
 
   const parsedCategoryId = useMemo(() => Number(categoryId), [categoryId]);
-  const title = name || 'Servicios';
+  const currentCategory = categories.find((category) => category.id === parsedCategoryId);
+  const title = currentCategory?.name || name || 'Servicios';
+  const listMaxHeight = Math.min(height * 0.46, 410);
+
+  useEffect(() => {
+    getCategorias().then(setCategories).catch(() => { });
+  }, []);
 
   useEffect(() => {
     let isMounted = true;
@@ -67,6 +92,20 @@ export default function ServicesByCategoryScreen() {
       params: {
         id: String(service.id),
         name: getServiceName(service),
+      },
+    });
+  };
+
+  const openCategory = (category: CategoriaServicio) => {
+    if (!category.id || category.id === parsedCategoryId) {
+      return;
+    }
+
+    router.replace({
+      pathname: '/services/[categoryId]',
+      params: {
+        categoryId: String(category.id),
+        name: category.name,
       },
     });
   };
@@ -112,6 +151,7 @@ export default function ServicesByCategoryScreen() {
               columnWrapperStyle={{ gap: 14 }}
               contentContainerStyle={{ gap: 14, paddingBottom: 20 }}
               scrollEnabled={services.length > 4}
+              style={services.length > 4 ? { maxHeight: listMaxHeight } : undefined}
               renderItem={({ item }) => {
                 const price = getServicePrice(item);
 
@@ -151,33 +191,40 @@ export default function ServicesByCategoryScreen() {
               }
             />
 
-            <View
-              className={`rounded-lg border px-4 py-4 mb-7 ${
-                isDarkMode ? 'bg-[#0E0E0E] border-[#2A2418]' : 'bg-[#EEE7DC] border-[#D2B383]'
-              }`}
-            >
-              <View className="flex-row items-center justify-between mb-4">
-                <Text className={`${colors.text} text-base font-bold font-radley`}>
-                  Complementos
-                </Text>
-                <Text className="text-[#E9B978] text-xs font-bold uppercase">Opcional</Text>
-              </View>
+            {categories.length > 0 && (
+              <View
+                className={`rounded-full border px-2 py-2 mb-7 ${
+                  isDarkMode ? 'bg-[#0E0E0E] border-[#2A2418]' : 'bg-[#EEE7DC] border-[#D2B383]'
+                }`}
+              >
+                <View className="flex-row items-center justify-between">
+                  {categories.map((category) => {
+                    const active = category.id === parsedCategoryId;
 
-              <View className="flex-row items-center justify-between">
-                {extraOptions.map((option) => (
-                  <TouchableOpacity
-                    key={option.label}
-                    className="items-center gap-2 flex-1"
-                    activeOpacity={0.8}
-                  >
-                    <View className="w-12 h-12 rounded-full bg-[#151914] items-center justify-center border border-[#E9B978]/20">
-                      {option.icon}
-                    </View>
-                    <Text className={`${colors.text} text-xs font-medium`}>{option.label}</Text>
-                  </TouchableOpacity>
-                ))}
+                    return (
+                      <TouchableOpacity
+                        key={category.id}
+                        className={`items-center justify-center gap-1 flex-1 rounded-full py-2 ${
+                          active ? 'bg-[#F4BF75]' : ''
+                        }`}
+                        onPress={() => openCategory(category)}
+                        activeOpacity={0.8}
+                      >
+                        {getCategoryIcon(category.name, active)}
+                        <Text
+                          className={`text-[11px] font-bold ${
+                            active ? 'text-[#2b1d3f]' : colors.text
+                          }`}
+                          numberOfLines={1}
+                        >
+                          {category.name}
+                        </Text>
+                      </TouchableOpacity>
+                    );
+                  })}
+                </View>
               </View>
-            </View>
+            )}
 
             <TouchableOpacity
               className="h-14 rounded-full bg-[#F4BF75] items-center justify-center mb-4"
