@@ -1,4 +1,5 @@
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
+import { router } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { getCategorias } from '../../../infrastructure/service/CategoryApi';
@@ -27,6 +28,20 @@ const ServiceCategories = () => {
         getCategorias().then(setCategories).catch(() => { });
     }, []);
 
+    const openCategory = (category: CategoriaServicio) => {
+        if (!category.id) {
+            return;
+        }
+
+        router.push({
+            pathname: '/services/[categoryId]',
+            params: {
+                categoryId: String(category.id),
+                name: category.name,
+            },
+        });
+    };
+
     return (
         <ScrollView
             horizontal
@@ -41,7 +56,11 @@ const ServiceCategories = () => {
         >
             {categories.map((cat) => (
                 <View key={cat.id} className="items-center mx-2">
-                    <TouchableOpacity className={`${colors.cardBg} w-14 h-14 rounded-full items-center justify-center mb-2 border ${colors.border}`}>
+                    <TouchableOpacity
+                        className={`${colors.cardBg} w-14 h-14 rounded-full items-center justify-center mb-2 border ${colors.border}`}
+                        onPress={() => openCategory(cat)}
+                        activeOpacity={0.8}
+                    >
                         {getCategoryIcon(cat.name)}
                     </TouchableOpacity>
                     <Text className={`${colors.subText} text-xs font-medium`}>{cat.name}</Text>

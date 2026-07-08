@@ -56,6 +56,18 @@ export default function TabLayout() {
           href: null,
         }}
       />
+      <Tabs.Screen
+        name="services/[categoryId]"
+        options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="services/detail/[id]"
+        options={{
+          href: null,
+        }}
+      />
     </Tabs>
   );
 }
