@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState, ReactNode } from 'react';
-import { Usuario, LoginData, RegistroData } from '../../domain/Auth';
+import React, { createContext, ReactNode, useContext, useState } from 'react';
+import { LoginData, RegistroData, Usuario } from '../../domain/Auth';
 import { login, registro, updateUsuario } from '../../infrastructure/service/AuthApi';
 
 interface AuthContextType {
@@ -13,14 +13,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [user, setUser] = useState<Usuario | null>({
-    id: 2,
-    fullName: "Pedro Trillo",
-    email: "pedro@gmail.com",
-    role: "User",
-    phone: "987654320",
-    isActive: true
-  });
+  const [user, setUser] = useState<Usuario | null>(null);
 
   const loginUser = async (data: LoginData): Promise<Usuario> => {
     const loggedUser = await login(data);

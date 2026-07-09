@@ -4,6 +4,7 @@ import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import 'react-native-reanimated';
+import { SafeAreaProvider, initialWindowMetrics } from 'react-native-safe-area-context';
 import "../global.css";
 import { ThemeProviderWrapper, useTheme } from '../src/ThemeContext';
 import { AuthProvider } from '../src/context/AuthContext';
@@ -57,10 +58,12 @@ export default function RootLayout() {
   }
 
   return (
-    <AuthProvider>
-      <ThemeProviderWrapper>
-        <RootNavigator />
-      </ThemeProviderWrapper>
-    </AuthProvider>
+    <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+      <AuthProvider>
+        <ThemeProviderWrapper>
+          <RootNavigator />
+        </ThemeProviderWrapper>
+      </AuthProvider>
+    </SafeAreaProvider>
   );
 }

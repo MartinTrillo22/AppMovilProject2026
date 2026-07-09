@@ -1,52 +1,32 @@
-import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
+import { CategoriaServicio } from '@/domain/Category';
+import { Servicio } from '@/domain/Service';
+import { getCategorias } from '@/infrastructure/service/CategoryApi';
+import { getServicios } from '@/infrastructure/service/ServiceApi';
+import CategoryNavigator from '@/src/components/barber/CategoryNavigator';
+import ServicesGrid from '@/src/components/barber/ServicesGrid';
+import { useTheme } from '@/src/ThemeContext';
+import { Feather } from '@expo/vector-icons';
 import { router, useLocalSearchParams } from 'expo-router';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
-  FlatList,
-  Pressable,
   Text,
   TouchableOpacity,
   View,
   useWindowDimensions,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { CategoriaServicio } from '@/domain/Category';
-import { Servicio, getServiceName, getServicePrice } from '@/domain/Service';
-import { getCategorias } from '@/infrastructure/service/CategoryApi';
-import { getServicios } from '@/infrastructure/service/ServiceApi';
-import { useTheme } from '@/src/ThemeContext';
-
-const getCategoryIcon = (name: string, active: boolean) => {
-  const color = active ? '#2b1d3f' : '#E9B978';
-  const normalized = name.toLowerCase();
-
-  if (normalized.includes('corte')) {
-    return <Feather name="scissors" size={18} color={color} />;
-  }
-  if (normalized.includes('barba')) {
-    return <MaterialCommunityIcons name="mustache" size={20} color={color} />;
-  }
-  if (normalized.includes('tinte')) {
-    return <MaterialCommunityIcons name="palette" size={20} color={color} />;
-  }
-  if (normalized.includes('ceja')) {
-    return <MaterialCommunityIcons name="eye-outline" size={20} color={color} />;
-  }
-
-  return <Feather name="tag" size={18} color={color} />;
-};
 
 export default function ServicesByCategoryScreen() {
   const { categoryId, name } = useLocalSearchParams<{ categoryId: string; name?: string }>();
-  const { colors, isDarkMode } = useTheme();
+  const { colors } = useTheme();
   const { height } = useWindowDimensions();
   const [categories, setCategories] = useState<CategoriaServicio[]>([]);
   const [services, setServices] = useState<Servicio[]>([]);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
 
-  const parsedCategoryId = useMemo(() => Number(categoryId), [categoryId]);
+  const parsedCategoryId = Number(categoryId);
   const currentCategory = categories.find((category) => category.id === parsedCategoryId);
   const title = currentCategory?.name || name || 'Servicios';
   const listMaxHeight = Math.min(height * 0.46, 410);
@@ -91,7 +71,7 @@ export default function ServicesByCategoryScreen() {
       pathname: '/services/detail/[id]',
       params: {
         id: String(service.id),
-        name: getServiceName(service),
+        name: service.name,
       },
     });
   };
@@ -144,87 +124,13 @@ export default function ServicesByCategoryScreen() {
           </View>
         ) : (
           <>
-            <FlatList
-              data={services}
-              keyExtractor={(item) => String(item.id)}
-              numColumns={2}
-              columnWrapperStyle={{ gap: 14 }}
-              contentContainerStyle={{ gap: 14, paddingBottom: 20 }}
-              scrollEnabled={services.length > 4}
-              style={services.length > 4 ? { maxHeight: listMaxHeight } : undefined}
-              renderItem={({ item }) => {
-                const price = getServicePrice(item);
+            <ServicesGrid services={services} maxHeight={listMaxHeight} onSelectService={openService} />
 
-                return (
-                  <Pressable
-                    onPress={() => openService(item)}
-                    className="flex-1 overflow-hidden rounded-md bg-[#B59668]"
-                    style={{ aspectRatio: 0.9 }}
-                  >
-                    <View
-                      className={`flex-1 items-center justify-center ${
-                        isDarkMode ? 'bg-[#1C1C1E]' : 'bg-[#D8D8D8]'
-                      }`}
-                    >
-                      <Feather name="image" size={32} color={isDarkMode ? '#5B5B5F' : '#9B8C78'} />
-                    </View>
-
-                    <View className="min-h-12 items-center justify-center px-2 py-2">
-                      <Text className="text-white text-center text-xs font-bold" numberOfLines={2}>
-                        {getServiceName(item)}
-                      </Text>
-                      {typeof price === 'number' && (
-                        <Text className="text-[#2b1d3f] text-xs font-bold mt-1">
-                          S/ {price.toFixed(2)}
-                        </Text>
-                      )}
-                    </View>
-                  </Pressable>
-                );
-              }}
-              ListEmptyComponent={
-                <View className="items-center justify-center py-20">
-                  <Text className={`${colors.subText} text-center`}>
-                    No hay servicios disponibles.
-                  </Text>
-                </View>
-              }
+            <CategoryNavigator
+              categories={categories}
+              activeCategoryId={parsedCategoryId}
+              onSelectCategory={openCategory}
             />
-
-            {categories.length > 0 && (
-              <View
-                className={`rounded-full border px-2 py-2 mb-7 ${
-                  isDarkMode ? 'bg-[#0E0E0E] border-[#2A2418]' : 'bg-[#EEE7DC] border-[#D2B383]'
-                }`}
-              >
-                <View className="flex-row items-center justify-between">
-                  {categories.map((category) => {
-                    const active = category.id === parsedCategoryId;
-
-                    return (
-                      <TouchableOpacity
-                        key={category.id}
-                        className={`items-center justify-center gap-1 flex-1 rounded-full py-2 ${
-                          active ? 'bg-[#F4BF75]' : ''
-                        }`}
-                        onPress={() => openCategory(category)}
-                        activeOpacity={0.8}
-                      >
-                        {getCategoryIcon(category.name, active)}
-                        <Text
-                          className={`text-[11px] font-bold ${
-                            active ? 'text-[#2b1d3f]' : colors.text
-                          }`}
-                          numberOfLines={1}
-                        >
-                          {category.name}
-                        </Text>
-                      </TouchableOpacity>
-                    );
-                  })}
-                </View>
-              </View>
-            )}
 
             <TouchableOpacity
               className="h-14 rounded-full bg-[#F4BF75] items-center justify-center mb-4"

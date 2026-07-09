@@ -1,7 +1,17 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { ActivityIndicator, Alert, ScrollView, StatusBar, Text, TouchableOpacity, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StatusBar,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import GoldButton from '../../src/components/ui/GoldButton';
 import InputField from '../../src/components/ui/InputField';
@@ -108,109 +118,115 @@ export default function RegisterScreen() {
     <SafeAreaView className="flex-1 bg-black">
       <StatusBar barStyle="light-content" backgroundColor="#000000" />
 
-      <ScrollView
-        className="flex-1 px-6"
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 40 }}
+      <KeyboardAvoidingView
+        className="flex-1"
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
-        {/* Back Button */}
-        <TouchableOpacity
-          onPress={() => router.back()}
-          className="flex-row items-center mt-4 self-start"
-          activeOpacity={0.7}
+        <ScrollView
+          className="flex-1 px-6"
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+          contentContainerStyle={{ paddingBottom: 40 }}
         >
-          <Ionicons name="arrow-back" size={24} color="white" />
-          <Text className="text-white text-base ml-2">Volver</Text>
-        </TouchableOpacity>
-
-        {/* Title */}
-        <Text className="text-white text-4xl font-normal font-radley text-center mt-16 mb-8">
-          Cree su Cuenta
-        </Text>
-
-        {/* Form Fields */}
-        <View className="w-full gap-4 mb-6">
-          <View>
-            <InputField
-              placeholder="Nombre del usuario"
-              value={name}
-              onChangeText={handleNameChange}
-            />
-            {nameError ? (
-              <Text className="text-red-500 text-xs mt-1 ml-1">{nameError}</Text>
-            ) : null}
-          </View>
-
-          <View>
-            <InputField
-              placeholder="Email"
-              keyboardType="email-address"
-              value={email}
-              onChangeText={handleEmailChange}
-            />
-            {emailError ? (
-              <Text className="text-red-500 text-xs mt-1 ml-1">{emailError}</Text>
-            ) : null}
-          </View>
-
-          <View>
-            <InputField
-              placeholder="Celular"
-              keyboardType="phone-pad"
-              value={phoneNumber}
-              onChangeText={handlePhoneNumberChange}
-            />
-            {phoneNumberError ? (
-              <Text className="text-red-500 text-xs mt-1 ml-1">{phoneNumberError}</Text>
-            ) : null}
-          </View>
-
-          <View>
-            <InputField
-              placeholder="Contraseña"
-              secureTextEntry={true}
-              value={password}
-              onChangeText={handlePasswordChange}
-            />
-            {passwordError ? (
-              <Text className="text-red-500 text-xs mt-1 ml-1">{passwordError}</Text>
-            ) : null}
-          </View>
-        </View>
-
-        {/* Terms and Conditions Checkbox */}
-        <View className="flex-row items-center justify-center px-4 mb-8 mt-6">
+          {/* Back Button */}
           <TouchableOpacity
+            onPress={() => router.back()}
+            className="flex-row items-center mt-4 self-start"
             activeOpacity={0.7}
-            onPress={() => setAgreed(!agreed)}
-            className={`w-6 h-6 border-[2px] border-white justify-center items-center mr-3 rounded-[4px] ${agreed ? 'bg-white' : 'bg-transparent'}`}
           >
-            {agreed && <Ionicons name="checkmark" size={16} color="black" />}
+            <Ionicons name="arrow-back" size={24} color="white" />
+            <Text className="text-white text-base ml-2">Volver</Text>
           </TouchableOpacity>
-          <Text className="text-white text-xs flex-1 leading-5">
-            Estoy de acuerdo con los{" "}
-            <Text className="text-[#e9b978] font-bold">Términos y Condiciones de Uso.</Text>
+
+          {/* Title */}
+          <Text className="text-white text-4xl font-normal font-radley text-center mt-16 mb-8">
+            Cree su Cuenta
           </Text>
-        </View>
 
-        {/* Register Button */}
-        <View className="items-center mb-8 mt-4">
-          <GoldButton
-            title="Registrarse"
-            onPress={handleRegister}
-            className="w-[70%] py-[14px]"
-            textClassName="text-lg"
-          />
-        </View>
+          {/* Form Fields */}
+          <View className="w-full gap-4 mb-6">
+            <View>
+              <InputField
+                placeholder="Nombre del usuario"
+                value={name}
+                onChangeText={handleNameChange}
+              />
+              {nameError ? (
+                <Text className="text-red-500 text-xs mt-1 ml-1">{nameError}</Text>
+              ) : null}
+            </View>
 
-        {/* Bottom Login Link */}
-        <View className="flex-row justify-center items-center mb-6">
-          <Text className="text-[#8e8e93] text-sm">¿Ya tienes una cuenta? </Text>
-          <TouchableOpacity onPress={() => router.push('/(auth)/login')}>
-            <Text className="text-white text-sm font-bold underline">Inicia sesión</Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
+            <View>
+              <InputField
+                placeholder="Email"
+                keyboardType="email-address"
+                value={email}
+                onChangeText={handleEmailChange}
+              />
+              {emailError ? (
+                <Text className="text-red-500 text-xs mt-1 ml-1">{emailError}</Text>
+              ) : null}
+            </View>
+
+            <View>
+              <InputField
+                placeholder="Celular"
+                keyboardType="phone-pad"
+                value={phoneNumber}
+                onChangeText={handlePhoneNumberChange}
+              />
+              {phoneNumberError ? (
+                <Text className="text-red-500 text-xs mt-1 ml-1">{phoneNumberError}</Text>
+              ) : null}
+            </View>
+
+            <View>
+              <InputField
+                placeholder="Contraseña"
+                secureTextEntry={true}
+                value={password}
+                onChangeText={handlePasswordChange}
+              />
+              {passwordError ? (
+                <Text className="text-red-500 text-xs mt-1 ml-1">{passwordError}</Text>
+              ) : null}
+            </View>
+          </View>
+
+          {/* Terms and Conditions Checkbox */}
+          <View className="flex-row items-center justify-center px-4 mb-8 mt-6">
+            <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={() => setAgreed(!agreed)}
+              className={`w-6 h-6 border-[2px] border-white justify-center items-center mr-3 rounded-[4px] ${agreed ? 'bg-white' : 'bg-transparent'}`}
+            >
+              {agreed && <Ionicons name="checkmark" size={16} color="black" />}
+            </TouchableOpacity>
+            <Text className="text-white text-xs flex-1 leading-5">
+              Estoy de acuerdo con los{" "}
+              <Text className="text-[#e9b978] font-bold">Términos y Condiciones de Uso.</Text>
+            </Text>
+          </View>
+
+          {/* Register Button */}
+          <View className="items-center mb-8 mt-4">
+            <GoldButton
+              title="Registrarse"
+              onPress={handleRegister}
+              className="w-[70%] py-[14px]"
+              textClassName="text-lg"
+            />
+          </View>
+
+          {/* Bottom Login Link */}
+          <View className="flex-row justify-center items-center mb-6">
+            <Text className="text-[#8e8e93] text-sm">¿Ya tienes una cuenta? </Text>
+            <TouchableOpacity onPress={() => router.push('/(auth)/login')}>
+              <Text className="text-white text-sm font-bold underline">Inicia sesión</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
       {isLoading && (
         <View className="absolute inset-0 bg-black/85 justify-center items-center z-50">
           <ActivityIndicator size="large" color="#e9b978" />

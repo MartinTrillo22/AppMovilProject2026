@@ -1,6 +1,16 @@
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { Alert, Image, ScrollView, StatusBar, Text, TouchableOpacity, View } from 'react-native';
+import {
+  Alert,
+  Image,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StatusBar,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { getApiErrorMessage } from '../../infrastructure/service/AuthApi';
 import { useAuth } from '../../src/context/AuthContext';
@@ -39,70 +49,76 @@ export default function LoginScreen() {
     <SafeAreaView className="flex-1 bg-black">
       <StatusBar barStyle="light-content" backgroundColor="#000000" />
 
-      <ScrollView
-        className="flex-1 px-6"
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 40 }}
+      <KeyboardAvoidingView
+        className="flex-1"
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
-        {/* Photo */}
-        <View className="w-full h-[240px] rounded-2xl overflow-hidden mt-14 mb-8">
-          <Image
-            source={require('../../assets/images/fotoprincipal.png')}
-            className="w-full h-full"
-            resizeMode="cover"
-          />
-        </View>
-
-        {/* Title */}
-        <Text className="text-white text-3xl font-normal font-radley text-center tracking-wider mb-2">
-          BIENVENIDO DE NUEVO
-        </Text>
-
-        {/* Subtitle */}
-        <Text className="text-[#8e8e93] text-lg text-center font-light mb-8">
-          Inicie sesion
-        </Text>
-
-        {/* Form Fields */}
-        <View className="w-full gap-4">
-          <InputField
-            placeholder="E-mail"
-            value={email}
-            onChangeText={setEmail}
-            keyboardType="email-address"
-          />
-          <InputField
-            placeholder="Contraseña"
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry={true}
-          />
-        </View>
-
-        {/* Login Button */}
-        <View className="items-center my-8">
-          <GoldButton
-            title={isLoading ? 'Entrando...' : 'Entrar'}
-            onPress={handleLogin}
-            className="w-[70%] py-[14px]"
-            textClassName="text-lg"
-          />
-        </View>
-
-        {/* Bottom Register Link */}
-        <TouchableOpacity
-          onPress={() => router.push('/(auth)/register')}
-          className="items-center mt-2"
-          activeOpacity={0.7}
+        <ScrollView
+          className="flex-1 px-6"
+          showsVerticalScrollIndicator={false}
+          keyboardShouldPersistTaps="handled"
+          contentContainerStyle={{ paddingBottom: 40 }}
         >
-          <Text className="text-[#8e8e93] text-sm text-center">
-            No tienes cuenta?{" "}
-            <Text className="text-white font-bold underline">
-              Click para crear una nueva cuenta
-            </Text>
+          {/* Photo */}
+          <View className="w-full h-[240px] rounded-2xl overflow-hidden mt-14 mb-8">
+            <Image
+              source={require('../../assets/images/fotoprincipal.png')}
+              className="w-full h-full"
+              resizeMode="cover"
+            />
+          </View>
+
+          {/* Title */}
+          <Text className="text-white text-3xl font-normal font-radley text-center tracking-wider mb-2">
+            BIENVENIDO DE NUEVO
           </Text>
-        </TouchableOpacity>
-      </ScrollView>
+
+          {/* Subtitle */}
+          <Text className="text-[#8e8e93] text-lg text-center font-light mb-8">
+            Inicie sesion
+          </Text>
+
+          {/* Form Fields */}
+          <View className="w-full gap-4">
+            <InputField
+              placeholder="E-mail"
+              value={email}
+              onChangeText={setEmail}
+              keyboardType="email-address"
+            />
+            <InputField
+              placeholder="Contraseña"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry={true}
+            />
+          </View>
+
+          {/* Login Button */}
+          <View className="items-center my-8">
+            <GoldButton
+              title={isLoading ? 'Entrando...' : 'Entrar'}
+              onPress={handleLogin}
+              className="w-[70%] py-[14px]"
+              textClassName="text-lg"
+            />
+          </View>
+
+          {/* Bottom Register Link */}
+          <TouchableOpacity
+            onPress={() => router.push('/(auth)/register')}
+            className="items-center mt-2"
+            activeOpacity={0.7}
+          >
+            <Text className="text-[#8e8e93] text-sm text-center">
+              No tienes cuenta?{" "}
+              <Text className="text-white font-bold underline">
+                Click para crear una nueva cuenta
+              </Text>
+            </Text>
+          </TouchableOpacity>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
