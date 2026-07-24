@@ -4,10 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
-  Servicio,
-  getServiceDescription,
-  getServiceName,
-  getServicePrice,
+  Servicio
 } from '@/domain/Service';
 import { getServicioById } from '@/infrastructure/service/ServiceApi';
 import { useTheme } from '@/src/ThemeContext';
@@ -48,7 +45,7 @@ export default function ServiceDetailScreen() {
     };
   }, [id]);
 
-  const price = service ? getServicePrice(service) : undefined;
+  const price = service ? service.price : undefined;
 
   return (
     <SafeAreaView className={`flex-1 ${colors.bg}`} edges={['top', 'left', 'right', 'bottom']}>
@@ -62,7 +59,7 @@ export default function ServiceDetailScreen() {
             <Feather name="arrow-left" size={26} color={colors.icon} />
           </TouchableOpacity>
           <Text className={`${colors.text} text-3xl font-bold font-radley flex-1`} numberOfLines={1}>
-            {service ? getServiceName(service) : name || 'Servicio'}
+            {service ? service.name : 'Servicio'}
           </Text>
         </View>
 
@@ -77,19 +74,18 @@ export default function ServiceDetailScreen() {
         ) : service ? (
           <View className="flex-1">
             <View
-              className={`w-full rounded-md items-center justify-center mb-8 ${
-                isDarkMode ? 'bg-[#1C1C1E]' : 'bg-[#D8D8D8]'
-              }`}
+              className={`w-full rounded-md items-center justify-center mb-8 ${isDarkMode ? 'bg-[#1C1C1E]' : 'bg-[#D8D8D8]'
+                }`}
               style={{ aspectRatio: 1.1 }}
             >
               <Feather name="image" size={42} color={isDarkMode ? '#5B5B5F' : '#9B8C78'} />
             </View>
 
             <Text className={`${colors.text} text-4xl font-bold font-radley mb-3`}>
-              {getServiceName(service)}
+              {service.name}
             </Text>
             <Text className={`${colors.subText} text-base leading-6 mb-5`}>
-              {getServiceDescription(service)}
+              {service.description || 'No tiene descripcion'}
             </Text>
 
             {typeof price === 'number' && (

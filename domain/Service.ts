@@ -1,9 +1,10 @@
 export interface Servicio {
   id: number;
-  name?: string;
+  name: string;
   description?: string;
-  price?: number;
-  durationMinutes?: number;
+  price: number;
+  duration: number;
   imageUrl?: string;
   categoryId: number;
+  isActive: boolean;
 }

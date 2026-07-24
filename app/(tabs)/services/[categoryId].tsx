@@ -10,6 +10,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
+  Alert,
   Text,
   TouchableOpacity,
   View,
@@ -18,11 +19,22 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function ServicesByCategoryScreen() {
-  const { categoryId, name } = useLocalSearchParams<{ categoryId: string; name?: string }>();
+  const params = useLocalSearchParams<{ categoryId: string; name?: string; selections?: string }>();
+  const { categoryId, name } = params;
   const { colors } = useTheme();
   const { height } = useWindowDimensions();
   const [categories, setCategories] = useState<CategoriaServicio[]>([]);
   const [services, setServices] = useState<Servicio[]>([]);
+  const [selectedServicesMap, setSelectedServicesMap] = useState<Record<number, Servicio>>(() => {
+    if (params.selections) {
+      try {
+        return JSON.parse(params.selections);
+      } catch {
+        return {};
+      }
+    }
+    return {};
+  });
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -66,13 +78,15 @@ export default function ServicesByCategoryScreen() {
     };
   }, [parsedCategoryId]);
 
-  const openService = (service: Servicio) => {
-    router.push({
-      pathname: '/services/detail/[id]',
-      params: {
-        id: String(service.id),
-        name: service.name,
-      },
+  const toggleSelectService = (service: Servicio) => {
+    setSelectedServicesMap((prev) => {
+      const copy = { ...prev };
+      if (copy[parsedCategoryId]?.id === service.id) {
+        delete copy[parsedCategoryId];
+      } else {
+        copy[parsedCategoryId] = service;
+      }
+      return copy;
     });
   };
 
@@ -86,9 +100,29 @@ export default function ServicesByCategoryScreen() {
       params: {
         categoryId: String(category.id),
         name: category.name,
+        selections: JSON.stringify(selectedServicesMap),
       },
     });
   };
+
+  const handleAvanzar = () => {
+    const selectedList = Object.values(selectedServicesMap);
+    if (selectedList.length === 0) {
+      Alert.alert('Atención', 'Selecciona al menos un servicio para continuar.');
+      return;
+    }
+
+    router.push({
+      pathname: '/services/summary',
+      params: {
+        servicesData: JSON.stringify(selectedList),
+      },
+    });
+  };
+
+  const selectedForCurrentCategory = selectedServicesMap[parsedCategoryId]
+    ? [selectedServicesMap[parsedCategoryId].id]
+    : [];
 
   return (
     <SafeAreaView className={`flex-1 ${colors.bg}`} edges={['top', 'left', 'right', 'bottom']}>
@@ -124,7 +158,12 @@ export default function ServicesByCategoryScreen() {
           </View>
         ) : (
           <>
-            <ServicesGrid services={services} maxHeight={listMaxHeight} onSelectService={openService} />
+            <ServicesGrid
+              services={services}
+              maxHeight={listMaxHeight}
+              selectedServiceIds={selectedForCurrentCategory}
+              onToggleSelect={toggleSelectService}
+            />
 
             <CategoryNavigator
               categories={categories}
@@ -133,6 +172,7 @@ export default function ServicesByCategoryScreen() {
             />
 
             <TouchableOpacity
+              onPress={handleAvanzar}
               className="h-14 rounded-full bg-[#F4BF75] items-center justify-center mb-4"
               activeOpacity={0.85}
             >
@@ -144,3 +184,4 @@ export default function ServicesByCategoryScreen() {
     </SafeAreaView>
   );
 }
+
