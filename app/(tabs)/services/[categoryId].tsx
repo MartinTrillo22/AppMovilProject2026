@@ -95,7 +95,7 @@ export default function ServicesByCategoryScreen() {
       return;
     }
 
-    router.replace({
+    router.push({
       pathname: '/services/[categoryId]',
       params: {
         categoryId: String(category.id),
@@ -105,7 +105,7 @@ export default function ServicesByCategoryScreen() {
     });
   };
 
-  const handleAvanzar = () => {
+  const handleContinuar = () => {
     const selectedList = Object.values(selectedServicesMap);
     if (selectedList.length === 0) {
       Alert.alert('Atención', 'Selecciona al menos un servicio para continuar.');
@@ -113,7 +113,7 @@ export default function ServicesByCategoryScreen() {
     }
 
     router.push({
-      pathname: '/services/summary',
+      pathname: '/services/appointment',
       params: {
         servicesData: JSON.stringify(selectedList),
       },
@@ -172,11 +172,11 @@ export default function ServicesByCategoryScreen() {
             />
 
             <TouchableOpacity
-              onPress={handleAvanzar}
+              onPress={handleContinuar}
               className="h-14 rounded-full bg-[#F4BF75] items-center justify-center mb-4"
               activeOpacity={0.85}
             >
-              <Text className="text-[#2b1d3f] text-2xl font-bold font-radley">Avanzar</Text>
+              <Text className="text-[#2b1d3f] text-2xl font-bold font-radley">Continuar</Text>
             </TouchableOpacity>
           </>
         )}

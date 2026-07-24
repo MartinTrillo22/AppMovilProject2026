@@ -72,6 +72,24 @@ export default function TabLayout() {
           href: null,
         }}
       />
+      <Tabs.Screen
+        name="services/appointment"
+        options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="services/summary"
+        options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="services/success"
+        options={{
+          href: null,
+        }}
+      />
     </Tabs>
   );
 }
